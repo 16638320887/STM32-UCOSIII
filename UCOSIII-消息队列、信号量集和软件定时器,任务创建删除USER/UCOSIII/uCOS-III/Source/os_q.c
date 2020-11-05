@@ -685,6 +685,42 @@ OS_OBJ_QTY  OSQPendAbort (OS_Q    *p_q,
 ************************************************************************************************************************
 */
 
+/*
+
+
+ 向消息队列发送消息 可以通过函数
+ OSQPost()向消息队列发送消息，如果消息队列是满的，则函数
+ OSQPost() 就会立刻返回，并且返回一个特定的错误代码，
+ 函数原型如下： void OSQPost (OS_Q *p_q,  void *p_void,  OS_MSG_SIZE msg_size,  OS_OPT opt,  OS_ERR *p_err)
+ 如果有多个任务在等待消息队列的话，那么优先级最高的任务将获得这个消息。如果等待 消息的任务优先级比发送消息的任务优先级高，则系统会执行任务调度，等待消息的任务立即 恢复运行，而发送消息的任务被挂起。可以通过 opt 设置消息队列是 FIFO 还是 LIFO。 如果有多个任务在等待消息队列的消息，则 
+ OSQPost()函数可以设置仅将消息发送给等待 任务中优先级最高的任务(opt 设置为 OS_OPT_POST_FIF 或者 OS_OPT_POST_LIFO)，
+ 也可以 将 消 息 发 送 给 所 有 等 待 的 任 务 (opt 设 置 为 OS_OPT_POST_ALL) 。
+ 如 果 opt 设 置 为 OS_OPT_POST_NO_SCHED，则在发送完消息后，会进行任务调度。
+ p_q： 指向一个消息队列。
+ p_void： 指向实际发送的内容，
+ p_void 是一个执行 void 类型的指针，
+ 其具体含义由用户程 序的决定。 msg_size： 
+ 设定消息的大小，单位为字节数。 
+ opt： 用来选择消息发送操作的类型，
+ 基本的类型可以有下面四种。
+ OS_OPT_POST_ALL 将消息发送给所有等待该消息队列的任务，需要 和选项 OS_OPT_POST_FIFO 或者 OS_OPT_POST_LIFO 配合使用。
+ OS_OPT_POST_FIFO 待发送消息保存在消息队列的末尾 
+ OS_OPT_POST_LIFO 待发送的消息保存在消息队列的开头 
+ OS_OPT_POST_NO_SCHED 禁止在本函数内执行任务调度。
+ 我们可以使用上面四种基本类型来组合出其他几种类型，
+ 如下： 
+ OS_OPT_POST_FIFO + OS_OPT_POST_ALL
+ OS_OPT_POST_LIFO + OS_OPT_POST_ALL 
+ OS_OPT_POST_FIFO + OS_OPT_POST_NO_SCHED
+ OS_OPT_POST_LIFO + OS_OPT_POST_NO_SCHED
+ ALIENTEK STM32F103 全系列开发板 UCOSII/III 开发教程 156 STM32F1 UCOS 开发手册
+ OS_OPT_POST_FIFO + OS_OPT_POST_ALL + OS_OPT_POST_NO_SCHED 
+ OS_OPT_POST_LIFO + OS_OPT_POST_ALL + OS_OPT_POST_NO_SCHED 
+ p_err： 用来保存调用此函数后返回的错误码。
+
+
+*/
+
 void  OSQPost (OS_Q         *p_q,
                void         *p_void,
                OS_MSG_SIZE   msg_size,

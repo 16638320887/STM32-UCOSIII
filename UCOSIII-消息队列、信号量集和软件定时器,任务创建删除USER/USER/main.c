@@ -219,7 +219,7 @@ CPU_STK   TASK2_TASK_STK[TASK2_STK_SIZE];
 void TASK2_task(void *p_arg);
 
 
-
+/*   向消息队列发送消息  */
 //信号量  邮箱    传递信息  
 
 // 在 UCOSII 中有消息邮箱和消息队列，但是在 UCOSIII 中只有消息队列。消息队列是由用 户创建的内核对象，数量不限制
@@ -312,7 +312,14 @@ int main(void)
 
 	
 	OSInit(&err);		//初始化UCOSIII
+	
+	
+
 	OS_CRITICAL_ENTER();//进入临界区
+	
+	
+	
+
 	//创建开始任务
 	OSTaskCreate((OS_TCB 	* )&StartTaskTCB,		//任务控制块
 				 (CPU_CHAR	* )"start task", 		//任务名字
@@ -406,9 +413,20 @@ void start_task(void *p_arg)
 /*进入临界区之前先创建了定时器任务*/
 	
 //	OSStatInit();						//初始化统计任务.这里会延时1秒钟左右	
+								
+								
+								
+								
+								
+								
 	
 	OS_CRITICAL_ENTER();	//进入临界区
 								
+	
+
+
+
+
 								
 								
 		//创建一个信号量
